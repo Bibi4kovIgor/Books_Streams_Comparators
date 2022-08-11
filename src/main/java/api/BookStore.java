@@ -101,7 +101,10 @@ public class BookStore implements Store<Book>{
                         + Math.pow((address2.getCoordinateGPSLatitude() - address1.getCoordinateGPSLatitude()), 2));
     }
 
-    public void printByParameter(List<Book> record, Function<Book, ?> parameter) {
-        System.out.println(books.stream().map(parameter).collect(Collectors.toList()));
+    @SafeVarargs
+    public final void printByParameter(List<Book> record, Function<Book, ?>... parameters) {
+        for (Function<Book, ?> parameter : parameters) {
+            System.out.println(books.stream().map(parameter).collect(Collectors.toList()));
+        }
     }
 }

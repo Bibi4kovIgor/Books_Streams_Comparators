@@ -2,7 +2,9 @@ package launcher;
 
 
 import api.BookStore;
+import comparator.CompareByIdComparator;
 import comparator.CompareByNameComparator;
+import comparator.CompareByParameters;
 import entity.Address;
 import entity.Book;
 import entity.Publisher;
@@ -11,7 +13,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Application {
     public static void main(String[] args) {
@@ -66,15 +67,22 @@ public class Application {
         bookStore.printByParameter(bookList, Book::getPrice);
 
         // Test comparator
-        bookStore.printByParameter(bookList, Book::getName);
-        bookList.sort(new CompareByNameComparator().reversed());
-        bookStore.printByParameter(bookList, Book::getName);
+        bookStore.printByParameter(bookList, Book::getName, Book::getId);
+        bookList.sort(new CompareByNameComparator().reversed()
+                .thenComparing(new CompareByIdComparator()));
+        bookStore.printByParameter(bookList, Book::getName, Book::getId);
 
         bookStore.printByParameter(bookList, Book::getSeries);
         Comparator<Book> sortByBookSeries = Comparator.comparing(Book::getSeries);
         bookList.sort(sortByBookSeries);
         bookStore.printByParameter(bookList, Book::getSeries);
-        
+
+        // TODO: remove this section.
+        //  Custom compare demo via comparator
+        List<String> stringList = Arrays.asList("some", "irregular", "unexpected", "values");
+        stringList.sort(new CompareByParameters("vusi"));
+        System.out.println(stringList);
+
     }
 
 
