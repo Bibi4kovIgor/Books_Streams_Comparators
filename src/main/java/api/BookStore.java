@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -38,14 +37,6 @@ public class BookStore implements Store<Book>{
     public Book deleteGood(String id) {
         return null;
     }
-
-
-    @Override
-    public void sortById(String id) {
-        Comparator<Book> bookComparator = Comparator.comparing(Book::getId);
-        books.sort(bookComparator.reversed());
-    }
-
 
     /**
     *
@@ -102,7 +93,7 @@ public class BookStore implements Store<Book>{
     }
 
     @SafeVarargs
-    public final void printByParameter(List<Book> record, Function<Book, ?>... parameters) {
+    public final void printByParameter(Function<Book, ?>... parameters) {
         for (Function<Book, ?> parameter : parameters) {
             System.out.println(books.stream().map(parameter).collect(Collectors.toList()));
         }

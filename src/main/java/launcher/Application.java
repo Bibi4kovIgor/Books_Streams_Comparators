@@ -4,7 +4,7 @@ package launcher;
 import api.BookStore;
 import comparator.CompareByIdComparator;
 import comparator.CompareByNameComparator;
-import comparator.CompareByParameters;
+import comparator.CompareByStringParameter;
 import entity.Address;
 import entity.Book;
 import entity.Publisher;
@@ -47,9 +47,9 @@ public class Application {
         Publisher publisher1 = new Publisher("1", "Education", address2, "+380999999999");
         Publisher publisher2 = new Publisher("2", "Romance", address3, "+380999999999");
 
-        Book book1 = new Book("125a", "The story of white wheal", "456", publisher1, 1000d);
-        Book book2 = new Book("125b", "The history of sea", "789", publisher2, 1500d);
-        Book book3 = new Book("126b", "The history of Earth", "123", publisher2, 1200d);
+        Book book1 = new Book("125a", "The story of white wheal", "sw1", publisher1, 1000d);
+        Book book2 = new Book("125b", "The history of sea", "das3", publisher2, 1500d);
+        Book book3 = new Book("126b", "The history of Earth", "a123", publisher2, 1200d);
 
         List<Book> bookList = Arrays.asList(book1, book2, book3);
 
@@ -59,29 +59,33 @@ public class Application {
         System.out.println(bookStore.makeRoute().getDistance(bookStore.getAddress(), publisher2.getAddress()));
         System.out.println(bookStore.makeRouteBetweenTwoAddresses(address1, address2).getDistance());
 
-        bookStore.printByParameter(bookList, Book::getId);
+        bookStore.printByParameter(Book::getId);
 
         // call method compareTo(Book) from Book data class
-        bookStore.printByParameter(bookList, Book::getPrice);
+        bookStore.printByParameter(Book::getPrice);
         Collections.sort(bookList);
-        bookStore.printByParameter(bookList, Book::getPrice);
+        bookStore.printByParameter(Book::getPrice);
 
         // Test comparator
-        bookStore.printByParameter(bookList, Book::getName, Book::getId);
+        bookStore.printByParameter(Book::getName, Book::getId);
         bookList.sort(new CompareByNameComparator().reversed()
                 .thenComparing(new CompareByIdComparator()));
-        bookStore.printByParameter(bookList, Book::getName, Book::getId);
+        bookStore.printByParameter(Book::getName, Book::getId);
 
-        bookStore.printByParameter(bookList, Book::getSeries);
-        Comparator<Book> sortByBookSeries = Comparator.comparing(Book::getSeries);
+        bookStore.printByParameter(Book::getName);
+        Comparator<Book> sortByBookSeries = Comparator.comparing(Book::getName);
         bookList.sort(sortByBookSeries);
-        bookStore.printByParameter(bookList, Book::getSeries);
+        bookStore.printByParameter(Book::getName);
+
+        bookStore.printByParameter(Book::getSeries);
+        bookList.sort(new CompareByStringParameter("asd", Book::getSeries));
+        bookStore.printByParameter(Book::getSeries);
 
         // TODO: remove this section.
         //  Custom compare demo via comparator
-        List<String> stringList = Arrays.asList("some", "irregular", "unexpected", "values");
-        stringList.sort(new CompareByParameters("vusi"));
-        System.out.println(stringList);
+//        List<String> stringList = Arrays.asList("some", "irregular", "unexpected", "values");
+//        stringList.sort(new CompareByParameters("vusi", ));
+//        System.out.println(stringList);
 
     }
 
