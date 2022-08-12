@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
 public class Application {
     public static void main(String[] args) {
@@ -73,22 +74,21 @@ public class Application {
         bookStore.printByParameter(Book::getName, Book::getId);
 
         bookStore.printByParameter(Book::getName);
-        Comparator<Book> sortByBookSeries = Comparator.comparing(Book::getName);
-        bookList.sort(sortByBookSeries);
+        sortBooksViaCustomComparatorByStringParametersSet(bookList, Book::getName);
         bookStore.printByParameter(Book::getName);
 
         bookStore.printByParameter(Book::getSeries);
         bookList.sort(new CompareByStringParameter("asd", Book::getSeries));
         bookStore.printByParameter(Book::getSeries);
 
-        // TODO: remove this section.
-        //  Custom compare demo via comparator
-//        List<String> stringList = Arrays.asList("some", "irregular", "unexpected", "values");
-//        stringList.sort(new CompareByParameters("vusi", ));
-//        System.out.println(stringList);
-
     }
 
-
-
+    @SafeVarargs
+    private static void sortBooksViaCustomComparatorByStringParametersSet(
+            List<Book> bookList, Function<Book, String>... parameters) {
+        for (Function<Book, String> compareParameter : parameters) {
+            Comparator<Book> sortByParameter = Comparator.comparing(compareParameter);
+            bookList.sort(sortByParameter);
+        }
+    }
 }

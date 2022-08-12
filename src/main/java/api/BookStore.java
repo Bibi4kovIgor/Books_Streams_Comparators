@@ -95,7 +95,11 @@ public class BookStore implements Store<Book>{
     @SafeVarargs
     public final void printByParameter(Function<Book, ?>... parameters) {
         for (Function<Book, ?> parameter : parameters) {
-            System.out.println(books.stream().map(parameter).collect(Collectors.toList()));
+            String result = books.stream()
+                    .map(parameter)
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(", ", "[", "]"));
+            System.out.println(result);
         }
     }
 }
